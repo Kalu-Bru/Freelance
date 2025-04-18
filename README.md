@@ -31,6 +31,7 @@ Follow these steps to run the project locally:
 
 4. **In a separate terminal, start the local Hardhat node**
    ```bash
+   cd Freelance
    npx hardhat node
    ```
 
