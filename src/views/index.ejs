@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="/style.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+        <link href="https://fonts.cdnfonts.com/css/futuristic" rel="stylesheet">
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const container = document.querySelector('.container');
+                
+                // Restore scroll position if available
+                const scrollPos = localStorage.getItem('scrollPos');
+                if (scrollPos) {
+                    container.scrollTop = parseInt(scrollPos);
+                    localStorage.removeItem('scrollPos');
+                }
+
+                // Add submit event listeners to all forms
+                document.querySelectorAll('form').forEach(form => {
+                    form.addEventListener('submit', function() {
+                        localStorage.setItem('scrollPos', container.scrollTop);
+                    });
+                });
+
+                // Update button states based on current step
+                updateButtonStates(<%= currentStep %>);
+            });
+
+            function updateButtonStates(currentStep) {
+                const deployForm = document.getElementById('deploy-contract-form');
+                const checkBalanceForm = document.querySelector('form[action="/check-balance"]');
+                const freelancerApproveForm = document.querySelector('form[action="/freelancer-approve"]');
+                const clientApproveForm = document.querySelector('form[action="/client-approve"]');
+                const checkBalanceAfterForm = document.querySelector('form[action="/check-balance-after"]');
+
+                // Disable all forms initially
+                [deployForm, checkBalanceForm, freelancerApproveForm, clientApproveForm, checkBalanceAfterForm].forEach(form => {
+                    if (form) {
+                        const button = form.querySelector('button');
+                        if (button) {
+                            button.disabled = true;
+                            button.classList.add('button-disabled');
+                        }
+                    }
+                });
+
+                // Enable the current step's form
+                switch(currentStep) {
+                    case 1:
+                        if (deployForm) {
+                            const button = deployForm.querySelector('button');
+                            if (button) {
+                                button.disabled = false;
+                                button.classList.remove('button-disabled');
+                            }
+                        }
+                        break;
+                    case 2:
+                        if (checkBalanceForm) {
+                            const button = checkBalanceForm.querySelector('button');
+                            if (button) {
+                                button.disabled = false;
+                                button.classList.remove('button-disabled');
+                            }
+                        }
+                        break;
+                    case 3:
+                        if (freelancerApproveForm) {
+                            const button = freelancerApproveForm.querySelector('button');
+                            if (button) {
+                                button.disabled = false;
+                                button.classList.remove('button-disabled');
+                            }
+                        }
+                        break;
+                    case 4:
+                        if (clientApproveForm) {
+                            const button = clientApproveForm.querySelector('button');
+                            if (button) {
+                                button.disabled = false;
+                                button.classList.remove('button-disabled');
+                            }
+                        }
+                        break;
+                    case 5:
+                        if (checkBalanceAfterForm) {
+                            const button = checkBalanceAfterForm.querySelector('button');
+                            if (button) {
+                                button.disabled = false;
+                                button.classList.remove('button-disabled');
+                            }
+                        }
+                        break;
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            <h1>
+                SmartFreelancer
+            </h1>
+        </div>
+        <div class="container">
+            <div class="bullet-point">
+                <div class="header-bullet">
+                    <h2>
+                        1. Discovery: A Client and a Freelancer Connect on a dApp
+                    </h2>
+                </div>
+                <span id="instructions-1">
+                    Every collaboration starts with discovery. On a decentralized application (dApp),
+                    a client and freelancer find each other and agree on the job details off-chain.
+                    Their wallet addresses are the on-chain identifiers — pseudonymous yet secure.
+                    This sets the stage but doesn't interact with the contract yet — it just introduces
+                    the Ethereum addresses that will be used in the next step.
+                </span>
+                <div class="content-b1">
+                    <div id="client-info">
+                        <ul id="actors-info-list">
+                            <li>Client:</li>
+                        </ul>
+                        <input id="address-input" type="text" value="<%= client %>" readonly>
+                    </div>
+                    <div id="freelancer-info">
+                        <ul id="actors-info-list">
+                            <li>Freelancer:</li>
+                        </ul>
+                        <div class="input-group">
+                            <input id="address-input-freelancer" type="text" value="<%= freelancer %>" readonly>
+                            <a class="input-icon" onclick="copyToClipboard()" onmouseover="showTooltip()" onmouseout="hideTooltip()">
+                                <i class="fa-solid fa-copy"></i>
+                            </a>
+                            <div id="tooltip" class="tooltip"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bullet-point">
+                <div class="header-bullet">
+                    <h2>
+                        2. Deployment: The Client Creates a Smart Contract
+                    </h2>
+                </div>
+                <span id="instructions-1">
+                    The client initiates the agreement by deploying a smart contract and sending the job's payment.
+                    This locks the funds in escrow. The contract stores the freelancer's address, the payment amount,
+                    and marks the contract as funded.
+                </span>
+                <div id="code-snippet">
+                    <pre style="overflow-x:scroll;"><code>
+    constructor(address _freelancer) payable {
+        client = msg.sender;
+        freelancer = _freelancer;
+        jobAmount = msg.value;
+        isFunded = true;
+    }
+                    </code></pre>
+                </div>
+                <span id="instructions-1">
+                    Copy the freelancer's address (found above) and paste it in the first input field.
+                    Then insert the pay amount (1 ETH for example) and click on the "Deploy contract" button.
+                </span>
+                <div class="content-bullet">
+                        <% if (deployed == false) { %>
+                            <form id="deploy-contract-form" action="/deploy-contract" method="post">
+                                <input id="deploy-contract-input" type="text" name="freelancerAddress" placeholder="Insert freelancers address..." required>
+                                <input id="deploy-contract-input" type="number" name="valueAmount" placeholder="Insert payload..." required>
+                                <input type="hidden" value="0xbt75re%R%V6rv65EVr65bRdnt7f/d&%DNuzfbiFUce" name="clientAddress">
+                                <button type="submit" id="deploy-contract-button" onclick="deployAnimation()"><i class="fa-solid fa-file-signature" style="padding-right:5%;"></i> Deploy contract</button>
+                            </form>
+                        <% } else { %>
+                            <button type="submit" id="deployed-contract-button"><i class="fa-solid fa-check" style="padding-right:5%;" deactivated></i> Deployed</button>
+                        <% } %>
+                    <div id="deploy-animation" class="animation-container hidden">
+                        <div class="blockchain">
+                            <div class="block" style="--i:0"></div>
+                            <div class="block" style="--i:1"></div>
+                            <div class="block" style="--i:2"></div>
+                            <div class="block" style="--i:3"></div>
+                            <div class="contract"><i class="fa-solid fa-file-contract"></i></div>
+                        </div>
+                        <p>Deploying smart contract...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bullet-point">
+                <div class="header-bullet">
+                    <h2>
+                        3. Transparency: Freelancer Checks the Contract Balance
+                    </h2>
+                </div>
+                <span id="instructions-1">
+                    To build trust, the freelancer can verify the contract's balance at any time.
+                    This ensures that the agreed-upon funds are safely held in escrow and haven't been tampered with.
+                </span>
+                <div id="code-snippet">
+                    <pre style="overflow-x:scroll;"><code>
+    function getContractBalance() external view returns (uint256) {
+        return address(this).balance;
+    }
+                    </code></pre>
+                </div>
+                <span id="instructions-1">
+                    Click on the "Check balance" button to see the contract's balance.
+                </span>
+                <div class="content-bullet">
+                    <% if (checked == "none") { %>
+                        <form id="deploy-contract-form" action="/check-balance" method="post">
+                            <button type="submit" id="approve-job-button"><i class="fa-solid fa-magnifying-glass" style="padding-right:5%;"></i> Check balance </button>
+                        </form>
+                    <% } else { %>
+                        <div id="contract-balance">
+                            <h4>Contract Balance: <%= checked %> <i class="fa-brands fa-ethereum"></i></h4>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="bullet-point">
+                <div class="header-bullet">
+                    <h2>
+                        4. Progress: Freelancer Approves the Completed Job
+                    </h2>
+                </div>
+                <span id="instructions-1">
+                    After finishing the work, the freelancer signals completion by approving the job within the smart contract.
+                    This step is required before payment can be released.
+                </span>
+                <div id="code-snippet">
+                    <pre style="overflow-x:scroll;"><code>
+    function approveJob(address freelancer, address client) external {
+        require(isFunded, "Job not funded");
+        if (msg.sender == freelancer) {
+            freelancerApproved = true;
+        }
+        // Payment release only happens when both parties approve
+    }                        
+                    </code></pre>
+                </div>
+                <span id="instructions-1">
+                    Click on the "Approve job" button to give the freelanceer's approval.
+                </span>
+                <div class="content-bullet">
+                    <% if (approvedFreelancer == false) { %>
+                        <form id="deploy-contract-form" action="/freelancer-approve" method="post">
+                            <input type="hidden" value="0xbt75re%R%V6rv65EVr65bRdnt7f/d&%DNuzfbiFUce" name="freelancerAddress">
+                            <input type="hidden" value="0xbt75re%R%V6rv65EVr65bRdnt7f/d&%DNuzfbiFUce" name="clientAddress">
+                            <button type="submit" id="approve-job-button"><i class="fa-solid fa-clipboard-check" style="padding-right:5%;"></i> Approve job </button>
+                        </form>
+                    <% } else { %>
+                        <button type="submit" id="approved-job-button"><i class="fa-solid fa-check" style="padding-right:5%;"></i> Approved </button>
+                    <% } %>
+                </div>
+            </div>
+            <div class="bullet-point">
+                <div class="header-bullet">
+                    <h2>
+                        5. Confirmation: Client Reviews and Approves the Work
+                    </h2>
+                </div>
+                <span id="instructions-1">
+                    Once the client inspects the delivered work, they can approve it too.
+                    With both approvals registered, the contract automatically releases payment to the freelancer.
+                </span>
+                <div id="code-snippet">
+                    <pre style="overflow-x:scroll;"><code>
+    if (msg.sender == client) {
+        clientApproved = true;
+    }
+    
+    if (clientApproved && freelancerApproved) {
+        releasePayment();
+    }                                              
+                    </code></pre>
+                </div>
+                <span id="instructions-1">
+                    With mutual approval, the contract triggers the releasePayment() function,
+                    which checks if the address balance is higher or equal to the job pay amount,
+                    transfers the funds to the freelancer and resets the "isFunded" variable.
+                    The funds are transferred directly to the freelancer's wallet without any intermediary. It's fast, fair, and trustless.
+                </span>
+                <div id="code-snippet">
+                    <pre style="overflow-x:scroll;"><code>
+    function releasePayment() internal {
+        require(address(this).balance >= jobAmount, "Insufficient funds");
+        payable(freelancer).transfer(jobAmount);
+        isFunded = false;
+    }                                             
+                    </code></pre>
+                </div>
+                <span id="instructions-1">
+                    Click on the "Approve job" button to give the client's approval and release the payment.
+                </span>
+                <div class="content-bullet">
+                    <% if (approvedClient == false) { %>
+                        <form id="deploy-contract-form" action="/client-approve" method="post">
+                            <input type="hidden" value="0xbt75re%R%V6rv65EVr65bRdnt7f/d&%DNuzfbiFUce" name="freelancerAddress">
+                            <input type="hidden" value="0xbt75re%R%V6rv65EVr65bRdnt7f/d&%DNuzfbiFUce" name="clientAddress">
+                            <button type="submit" id="approve-job-button"><i class="fa-solid fa-user-check" style="padding-right:5%;"></i> Approve job </button>
+                        </form>
+                    <% } else { %>
+                        <% if (checkedAfter == "none") { %>
+                            <button type="submit" id="approved-job-button"><i class="fa-solid fa-check" style="padding-right:5%;"></i> Approved </button>
+                            <span id="instructions-1">
+                                After both client and freelancer approved the job completion, the funds are transferred to the freelancer.
+                                The contract balance should now be 0 ETH, we can check that again with the getContractBalance() function.
+                            </span>
+                            <form id="deploy-contract-form" action="/check-balance-after" method="post">
+                                <button type="submit" id="approve-job-button"><i class="fa-solid fa-magnifying-glass" style="padding-right:5%;"></i> Check balance </button>
+                            </form>
+                        <% } else { %>
+                            <div id="contract-balance">
+                                <h4>Contract Balance: <%= checkedAfter %> <i class="fa-brands fa-ethereum"></i></h4>
+                            </div>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+            <div class="bullet-point">
+                <div class="header-bullet">
+                    <h2>
+                        6. Optional: Cancel the Job and Refund the Client
+                    </h2>
+                </div>
+                <span id="instructions-1">
+                    If both parties haven't approved the job yet, the client can cancel the agreement.
+                    This action refunds the locked funds back to the client and prevents the contract from being used again.
+                    It's a safety net in case things don't move forward as planned.
+                </span>
+                <span id="instructions-1">
+                    <b>Condition:</b> Neither the client nor freelancer must have approved the job yet.
+                </span>
+                <div id="code-snippet">
+                    <pre style="overflow-x:scroll;"><code>
+    function cancelAndRefund() external onlyClient {
+        require(!clientApproved && !freelancerApproved, "Cannot cancel after approval");
+        payable(client).transfer(address(this).balance);
+        isFunded = false;
+    }                                                                    
+                    </code></pre>
+                </div>
+            </div>
+            <div class="bullet-point">
+                <div class="header-bullet">
+                    <h2>
+                        Full smart contract
+                    </h2>
+                </div>
+                <span id="instructions-1">
+                    This smart contract acts as a simple escrow system for freelance jobs.
+                    A client initiates the process by deploying the contract and depositing payment along with the freelancer's wallet address.
+                    The funds are held securely in the contract until both the freelancer and the client approve the job's completion.
+                    Once both parties give their approval, the contract automatically releases the payment to the freelancer.
+                    At any time before approval, the freelancer can check the contract's balance for transparency.
+                    If the job falls through before any approvals are given, the client has the option to cancel the contract and receive a full refund.
+                    The system ensures fairness, removes the need for intermediaries, and enforces trust through code.
+                </span>
+                <div id="code-snippet-2">
+                    <pre style="overflow-x:scroll;"><code>
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.20;
+    
+    contract FreelanceEscrow {
+        address public client;
+        address public freelancer;
+        uint256 public jobAmount;
+        bool public clientApproved;
+        bool public freelancerApproved;
+        bool public isFunded;
+    
+        event FreelancerApproval(address freelancer);
+        event ClientApproval(address client);
+    
+        constructor(address _freelancer) payable {
+            client = msg.sender;
+            freelancer = _freelancer;
+            jobAmount = msg.value;
+            isFunded = true;
+        }
+    
+        modifier onlyClient() {
+            require(msg.sender == client, "Only client can call this");
+            _;
+        }
+    
+        modifier onlyFreelancer() {
+            require(msg.sender == freelancer, "Only freelancer can call this");
+            _;
+        }
+    
+        function approveJob(address freelancerAddress, address clientAddress) external {
+            require(isFunded, "Job not funded");
+            if (msg.sender == client) {
+                clientApproved = true;
+            } else if (msg.sender == freelancer) {
+                freelancerApproved = true;
+            } else {
+                revert("Not authorized");
+            }
+    
+            if (clientApproved && freelancerApproved) {
+                releasePayment();
+            } else if (clientApproved && !freelancerApproved) {
+                emit ClientApproval(clientAddress);
+            } else if (!clientApproved && freelancerApproved) {
+                emit FreelancerApproval(freelancerAddress);
+            }
+        }
+    
+        function releasePayment() internal {
+            require(address(this).balance >= jobAmount, "Insufficient funds");
+            payable(freelancer).transfer(jobAmount);
+            isFunded = false;
+        }
+    
+        function cancelAndRefund() external onlyClient {
+            require(!clientApproved && !freelancerApproved, "Cannot cancel after approval");
+            payable(client).transfer(address(this).balance);
+            isFunded = false;
+        }
+    
+        function getContractBalance() external view returns (uint256) {
+            return address(this).balance;
+        }
+    }                                                                                                                  
+                    </code></pre>
+                </div>
+            </div>
+        </div>
+        <canvas id="waveCanvas"></canvas>
+        <script>
+            const canvas = document.getElementById("waveCanvas");
+            const ctx = canvas.getContext("2d");
+
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            const particleSpacing = 10;
+            const waveSpeed = 0.0008;
+
+            let particles = [];
+
+            function createParticles() {
+            particles = [];
+            for (let y = 0; y < height; y += particleSpacing) {
+                for (let x = 0; x < width; x += particleSpacing) {
+                particles.push({ baseX: x, baseY: y });
+                }
+            }
+            }
+
+            function drawParticles(time) {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = "#924DBF";
+
+            const t = time * waveSpeed;
+
+            particles.forEach(p => {
+                const wave1 = Math.sin(p.baseX * 0.04 + t) * 6;
+                const wave2 = Math.cos(p.baseY * 0.05 + t * 0.8) * 6;
+                const wave3 = Math.sin((p.baseX + p.baseY) * 0.03 + t * 1.2) * 4;
+                const wave4 = Math.cos((p.baseX - p.baseY) * 0.03 + t * 0.9) * 4;
+
+                const offsetX = wave1 + wave3;
+                const offsetY = wave2 + wave4;
+
+                const x = p.baseX + offsetX;
+                const y = p.baseY + offsetY;
+
+                ctx.beginPath();
+                ctx.arc(x, y, 1, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            }
+
+            function animate(time) {
+            drawParticles(time);
+            requestAnimationFrame(animate);
+            }
+
+            window.addEventListener("resize", () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            createParticles();
+            });
+
+            createParticles();
+            animate(0);
+        </script>
+        <script src="/script.js"></script>
+    </body>
+</html>

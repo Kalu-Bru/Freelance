@@ -1,0 +1,352 @@
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    background: black;
+    overflow: hidden;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    font-family: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
+    font-weight: normal;
+    overflow: hidden;
+}
+
+canvas {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 10%;
+    left: 0%;
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.header {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:#7338A0;
+    z-index: 1000;
+}
+
+.container {
+    height: 90vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background: none;
+    /* background: #9E72C3; */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 5%;
+    font-family: inherit;
+    z-index: 1000;
+    position: relative;
+}
+
+.bullet-point {
+    height: auto;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 5%;
+    background: none;
+    font-family: inherit;
+    color: white;
+}
+
+h1 {
+    margin: 0;
+    font-family: 'Futuristic', sans-serif;
+    letter-spacing: 5px;
+}
+
+h2 {
+    margin: 2% 0% 0% 0%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: inherit;
+}
+
+h3 {
+    margin: 0;
+    font-weight: bold;
+    font-family: inherit;
+}
+
+.header-bullet {
+    height: 10vh;
+    width: 90%;
+    background: none;
+    font-family: inherit;
+}
+
+.content-bullet {
+    height: auto;
+    width: 80%;
+    background: none;
+    font-family: inherit;
+}
+
+.content-b1 {
+    height: auto;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    background: none;
+}
+
+#actors-info-list {
+    list-style-type: none;
+    width: 100%;
+    font-family: inherit;
+}
+
+#address-input {
+    font-size: auto;
+    width: 80%;
+    padding: 5%;
+    border: solid 2px darkgray;
+    background: rgb(67, 67, 67);
+    color: white;
+    border-radius: 10px;
+    font-family: inherit;
+}
+
+#freelancer-info {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10%;
+}
+
+#client-info {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#deploy-contract-button,
+#approve-job-button,
+#deployed-contract-button,
+#approved-job-button {
+    height: 10%;
+    width: 50%;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    padding: 3%;
+    margin: 5% 0% 5% 0%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all ease 0.5s;
+    animation: fadeInButton 0.5s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+#deployed-contract-button,
+#approved-job-button {
+    width: 30%;
+    background: rgb(0, 172, 0);
+    justify-self: center;
+}
+
+#deploy-contract-button:hover,
+#approve-job-button:hover {
+    width: 40%;
+    cursor: pointer;
+}
+
+@keyframes fadeInButton {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#deploy-contract-form {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#deploy-contract-input {
+    height: 30%;
+    width: 80%;
+    border: solid 2px darkgray;
+    background: rgb(67, 67, 67);
+    color: white;
+    border-radius: 10px;
+    margin-top: 5%;
+    padding-left: 2%;
+    font-family: inherit;
+}
+
+#instructions-1 {
+    width: 80%;
+    padding: 2% 5% 2% 5%;
+    font-size: 15px;
+    font-family: inherit;
+    text-align: justify;
+}
+
+#code-snippet {
+    width: 60%;
+    height: auto;
+    border-radius: 10px;
+    background: #4a2574b3;
+    margin-bottom: 5%;
+}
+
+#code-snippet-2 {
+    width: 70%;
+    height: auto;
+    border-radius: 10px;
+    background: #4a2574b3;
+    margin-bottom: 5%;
+}
+
+.input-icon {
+    height: 100%;
+    width: 10%;
+    color: #ccc;
+    padding-left: 5%;
+    border-left: 1px solid #444;
+    margin-left: 5%;
+    cursor: pointer;
+}
+
+.input-icon:hover {
+    color: white;
+}
+
+.input-group {
+    width: 80%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    border: solid 2px darkgray;
+    border-radius: 10px;
+    background-color: #333;
+    padding: 8px;
+}
+
+#address-input-freelancer {
+    font-size: auto;
+    width: 80%;
+    padding: 5%;
+    border: none;
+    background: rgb(67, 67, 67);
+    color: white;
+    border-radius: 10px;
+    font-family: inherit;
+}
+
+#contract-balance {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeInButton 0.5s ease forwards;
+    opacity: 0;
+}
+
+h4 {
+    width: 20%;
+    border-radius: 10px;
+    background: #9E72C3;
+    padding: 5%;
+}
+
+.animation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+    font-family: monospace;
+}
+
+.hidden {
+    display: none;
+}
+
+.blockchain {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.block {
+    width: 40px;
+    height: 40px;
+    background-color: #444;
+    border: 2px solid #66f;
+    border-radius: 6px;
+    animation: pulse 1.2s infinite;
+    animation-delay: calc(var(--i) * 0.2s);
+}
+
+.contract {
+    width: 30px;
+    height: 40px;
+    background: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: moveContract 2.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes moveContract {
+    0% { left: 0; }
+    100% { left: 160px; }
+}
+
+.button-disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    background-color: #666 !important;
+}
+
+.button-disabled:hover {
+    width: 50% !important;
+    cursor: not-allowed !important;
+}
