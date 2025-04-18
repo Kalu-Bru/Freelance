@@ -48,3 +48,32 @@ Follow these steps to run the project locally:
 ## 📄 License
 
 MIT License
+
+## 🧹 Cleanup Instructions
+
+Once you're done exploring the demo and want to remove everything:
+
+### 1. Remove the cloned repository folder
+
+From the parent directory where you cloned the project:
+```bash
+rm -rf Freelance
+```
+
+
+### 2. Uninstall globally installed dependencies (if any)
+
+If you installed anything globally (optional), you can remove it like this:
+
+```bash
+npm uninstall -g hardhat
+```
+
+### 3. (Optional) Clear local node modules and lock file first
+
+If you want to clean up without deleting the repo folder:
+
+```bash
+rm -rf node_modules package-lock.json
+```
+
