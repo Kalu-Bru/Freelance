@@ -24,18 +24,23 @@ Follow these steps to run the project locally:
    npm install
    ```
 
-3. **Start the app**
+3. **Compile the contract**
+   ```bash
+   npx hardhat compile
+   ```
+
+4. **Start the app**
    ```bash
    node src/app
    ```
 
-4. **In a separate terminal, start the local Hardhat node**
+5. **In a separate terminal, start the local Hardhat node**
    ```bash
    cd Freelance
    npx hardhat node
    ```
 
-5. **Open your browser**
+6. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000) and follow the instructions in the UI.
 
 ## 🧪 Tech Stack
