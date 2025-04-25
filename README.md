@@ -82,3 +82,6 @@ If you want to clean up without deleting the repo folder:
 rm -rf node_modules package-lock.json
 ```
 
+## ⚠️ Disclaimer
+
+The smart contracts provided in this repository are simplified examples created for educational and demonstration purposes only. They are designed to run on a local blockchain node and are not intended for deployment to mainnet or handling real funds. Please do not use these contracts as-is in production environments. If you wish to experiment with smart contracts, always do so on a testnet and perform thorough testing and audits before considering any real-world use.
